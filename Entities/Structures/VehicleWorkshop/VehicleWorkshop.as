@@ -59,14 +59,23 @@ void InitWorkshop(CBlob@ this)
 	{
 		string trebuchet_icon = getTeamIcon("trebuchet", "TrebuchetIcon.png", team_num, Vec2f(63, 83), 0);
 		ShopItem@ s = addShopItem(this, "Trebuchet", trebuchet_icon, "trebuchet", trebuchet_icon + "\n\n\n\n\n\n\n\n\n\n" + "Type of catapult that uses a long arm to throw a projectile. Shoots far and hurts, you can pick it up", false, true);
-		s.crate_icon = 6;
+		s.crate_icon = 4;
 		s.customButton = true;
-		s.buttonwidth = 4;
+		s.buttonwidth = 3;
 		s.buttonheight = 4;
 		AddRequirement(s.requirements, "coin", "", "Coins", 300);
 		AddRequirement(s.requirements, "blob", "mat_gold", "Gold", 100);
 		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 1000);
-
+	}
+	{
+		string cannon_icon = getTeamIcon("cannon", "CannonIcon.png", team_num, Vec2f(24, 12), 0);
+		ShopItem@ s = addShopItem(this, "Cannon", cannon_icon, "cannon", cannon_icon + "\n\n\n" + "Powerful weapon with long recharging, be careful with it", false, true);
+		s.crate_icon = 4;
+		s.customButton = true;
+		s.buttonwidth = 1;
+		s.buttonheight = 1;
+		AddRequirement(s.requirements, "coin", "", "Coins", 100);
+		AddRequirement(s.requirements, "blob", "mat_gold", "Gold", 50);
 	}
 	////////////////////////////////////////////////////////////	Ammo	/////////////////////////////////////////////////////////////////////////
 	{
@@ -88,6 +97,15 @@ void InitWorkshop(CBlob@ this)
 	{
 		string mat_trebuchet_shells_icon = getTeamIcon("mat_trebuchetshells", "MaterialTrebuchetShells.png", team_num, Vec2f(16, 16), 3);
 		ShopItem@ s = addShopItem(this, "Trebuchet Shells", mat_trebuchet_shells_icon, "mat_trebuchetshells", mat_trebuchet_shells_icon + "\n\n\n" + "Trebuchet ammo, strong enough to destroy enemy face and base");
+		s.crate_icon = 5;
+		s.customButton = true;
+		s.buttonwidth = 1;
+		s.buttonheight = 1;
+		AddRequirement(s.requirements, "coin", "", "Coins", 100);
+	}
+	{
+		string mat_cannonball_icon = getTeamIcon("mat_cannonball", "MaterialCannonball.png", team_num, Vec2f(16, 16), 0);
+		ShopItem@ s = addShopItem(this, "Cannonball", mat_cannonball_icon, "mat_cannonball", mat_cannonball_icon + "\n\n\n" + "Cannon ammo, dont explode on your own base");
 		s.crate_icon = 5;
 		s.customButton = true;
 		s.buttonwidth = 1;
