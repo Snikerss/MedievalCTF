@@ -25,6 +25,7 @@ void InitWorkshop(CBlob@ this)
 
     int team_num = this.getTeamNum();
 
+	////////////////////////////////////////////////////////	Vehicles	//////////////////////////////////////////////////
     {
 		string cata_icon = getTeamIcon("catapult", "VehicleIcons.png", team_num, Vec2f(32, 32), 0);
 		ShopItem@ s = addShopItem(this, "Catapult", cata_icon, "catapult", cata_icon + "\n\n\n" + Descriptions::catapult, false, true);
@@ -39,22 +40,6 @@ void InitWorkshop(CBlob@ this)
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::ballista);
 		AddRequirement(s.requirements, "blob", "mat_gold", "Gold", CTFCosts::ballista_gold);
 		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 500);
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Ballista Ammo", "$mat_bolts$", "mat_bolts", "$mat_bolts$\n\n\n" + Descriptions::ballista_ammo, false, false);
-		s.crate_icon = 5;
-		s.customButton = true;
-		s.buttonwidth = 2;
-		s.buttonheight = 1;
-		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::ballista_ammo);
-	}
-	{
-		ShopItem@ s = addShopItem(this, "Ballista Shells", "$mat_bomb_bolts$", "mat_bomb_bolts", "$mat_bomb_bolts$\n\n\n" + Descriptions::ballista_bomb_ammo, false, false);
-		s.crate_icon = 5;
-		s.customButton = true;
-		s.buttonwidth = 2;
-		s.buttonheight = 1;
-		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::ballista_bomb_ammo);
 	}
 	{
 		string longboat_icon = getTeamIcon("longboat", "VehicleIcons.png", team_num, Vec2f(32, 32), 4);
@@ -82,6 +67,32 @@ void InitWorkshop(CBlob@ this)
 		AddRequirement(s.requirements, "blob", "mat_gold", "Gold", 100);
 		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 1000);
 
+	}
+	////////////////////////////////////////////////////////////	Ammo	/////////////////////////////////////////////////////////////////////////
+	{
+		ShopItem@ s = addShopItem(this, "Ballista Ammo", "$mat_bolts$", "mat_bolts", "$mat_bolts$\n\n\n" + Descriptions::ballista_ammo, false, false);
+		s.crate_icon = 5;
+		s.customButton = true;
+		s.buttonwidth = 2;
+		s.buttonheight = 1;
+		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::ballista_ammo);
+	}
+	{
+		ShopItem@ s = addShopItem(this, "Ballista Shells", "$mat_bomb_bolts$", "mat_bomb_bolts", "$mat_bomb_bolts$\n\n\n" + Descriptions::ballista_bomb_ammo, false, false);
+		s.crate_icon = 5;
+		s.customButton = true;
+		s.buttonwidth = 2;
+		s.buttonheight = 1;
+		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::ballista_bomb_ammo);
+	}
+	{
+		string mat_trebuchet_shells_icon = getTeamIcon("mat_trebuchetshells", "MaterialTrebuchetShells.png", team_num, Vec2f(16, 16), 3);
+		ShopItem@ s = addShopItem(this, "Trebuchet Shells", mat_trebuchet_shells_icon, "mat_trebuchetshells", mat_trebuchet_shells_icon + "\n\n\n" + "Trebuchet ammo, strong enough to destroy enemy face and base");
+		s.crate_icon = 5;
+		s.customButton = true;
+		s.buttonwidth = 1;
+		s.buttonheight = 1;
+		AddRequirement(s.requirements, "coin", "", "Coins", 100);
 	}
 }
 
