@@ -9,6 +9,8 @@ void onInit(CBlob@ this)
 	              false  // inventory access
 	             );
 
+	
+
 	VehicleInfo@ v;
 	if (!this.get("VehicleInfo", @v))
         return;
@@ -32,9 +34,13 @@ void onInit(CBlob@ this)
 	                         1.0f // movement sound pitch modifier     0.0f = no manipulation
 	                        );
 
-	{ CSpriteLayer@ w = Vehicle_addWoodenWheel(this, v, 0, Vec2f(10.0f, 10.0f)); if (w !is null) w.SetRelativeZ(10.0f); }
-	{ CSpriteLayer@ w = Vehicle_addWoodenWheel(this, v, 0, Vec2f(-1.0f, 10.0f)); if (w !is null) w.SetRelativeZ(10.0f); }
-	{ CSpriteLayer@ w = Vehicle_addWoodenWheel(this, v, 0, Vec2f(-11.0f, 10.0f)); if (w !is null) w.SetRelativeZ(10.0f); }
+	{ CSpriteLayer@ w = Vehicle_addWoodenWheel(this, v, 0, Vec2f(25.0f, 10.0f)); if (w !is null) w.SetRelativeZ(10.0f); }
+	{ CSpriteLayer@ w = Vehicle_addWoodenWheel(this, v, 0, Vec2f(14.0f, 10.0f)); if (w !is null) w.SetRelativeZ(10.0f); }
+	{ CSpriteLayer@ w = Vehicle_addWoodenWheel(this, v, 0, Vec2f(3.0f, 10.0f)); if (w !is null) w.SetRelativeZ(10.0f); }
+	{ CSpriteLayer@ w = Vehicle_addWoodenWheel(this, v, 0, Vec2f(-8.0f, 10.0f)); if (w !is null) w.SetRelativeZ(10.0f); }
+	{ CSpriteLayer@ w = Vehicle_addWoodenWheel(this, v, 0, Vec2f(-20.0f, 10.0f)); if (w !is null) w.SetRelativeZ(10.0f); }
+
+	this.set_f32("map dmg modifier", 200.0f);
 }
 
 void onTick(CBlob@ this)
