@@ -41,6 +41,17 @@ void onInit(CBlob@ this)
 	{ CSpriteLayer@ w = Vehicle_addWoodenWheel(this, v, 0, Vec2f(-20.0f, 10.0f)); if (w !is null) w.SetRelativeZ(10.0f); }
 
 	this.set_f32("map dmg modifier", 200.0f);
+
+	CSprite@ sprite = this.getSprite();
+	CSpriteLayer@ front = sprite.addSpriteLayer("front layer", sprite.getConsts().filename, 70, 32);
+	if (front !is null)
+	{
+		front.addAnimation("default", 0, false);
+		int[] frames = { 0 };
+		front.animation.AddFrames(frames);
+		front.SetRelativeZ(55.0f);
+		front.SetOffset(Vec2f(-7, -4));
+	}
 }
 
 void onTick(CBlob@ this)

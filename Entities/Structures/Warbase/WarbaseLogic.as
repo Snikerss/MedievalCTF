@@ -143,13 +143,23 @@ void onInit( CBlob@ this )
 void onTick( CBlob@ this )
 {
     const int team = this.getTeamNum();
-    this.SetFacingLeft(true);
-    const int gametime = getGameTime() + team; //!	
+    const int gametime = getGameTime() + team;
 	const int performance_opt = 14;
 
-    if(gametime % performance_opt == 0)
+    if(this.getTeamNum() == 0)
     {
-        getMap().server_AddSector(this.getPosition() + Vec2f(-40,16), this.getPosition() - Vec2f(-130,48), "no build", "", this.getNetworkID());
+        this.SetFacingLeft(true);
+        if(gametime % performance_opt == 0)
+        {
+            getMap().server_AddSector(this.getPosition() + Vec2f(-40,16), this.getPosition() - Vec2f(-130,48), "no build", "", this.getNetworkID());
+        }
+    }
+    else
+    {
+        if(gametime % performance_opt == 0)
+        {
+            getMap().server_AddSector(this.getPosition() + Vec2f(40,16), this.getPosition() - Vec2f(130,48), "no build", "", this.getNetworkID());
+        }
     }
 
     if ((gametime % performance_opt == 0))
