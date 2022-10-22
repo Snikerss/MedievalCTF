@@ -6,7 +6,7 @@ const u32 timer_max = 10000;
 void onInit(CBlob@ this)
 {
     this.set_f32("map_damage_radius", 48.0f);
-    this.set_f32("map_damage_ratio", 48.0f);
+    this.set_f32("map_damage_ratio", 480.0f);
 	
 	this.set_string("custom_explosion_sound", "Keg.ogg");
 

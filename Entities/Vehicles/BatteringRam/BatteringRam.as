@@ -3,7 +3,7 @@
 void onInit(CBlob@ this)
 {
     Vehicle_Setup(this,
-	              60.0f, // move speed
+	              80.0f, // move speed
 	              0.31f,  // turn speed
 	              Vec2f(0.0f, 0.0f), // jump out velocity
 	              false  // inventory access
@@ -40,7 +40,7 @@ void onInit(CBlob@ this)
 	{ CSpriteLayer@ w = Vehicle_addWoodenWheel(this, v, 0, Vec2f(-8.0f, 10.0f)); if (w !is null) w.SetRelativeZ(10.0f); }
 	{ CSpriteLayer@ w = Vehicle_addWoodenWheel(this, v, 0, Vec2f(-20.0f, 10.0f)); if (w !is null) w.SetRelativeZ(10.0f); }
 
-	this.set_f32("map dmg modifier", 50.0f);
+	this.set_f32("map dmg modifier", 100.0f);
 
 	CSprite@ sprite = this.getSprite();
 	CSpriteLayer@ front = sprite.addSpriteLayer("front layer", sprite.getConsts().filename, 70, 32);

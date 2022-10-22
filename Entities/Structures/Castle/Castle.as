@@ -4,7 +4,6 @@ void onInit(CBlob@ this)
 {
     this.getSprite().SetZ(-50.0f);
     this.getShape().getConsts().mapCollisions = false;
-    this.SetFacingLeft(true);
     
     this.set_TileType("background tile", CMap::tile_empty);
 
@@ -15,18 +14,27 @@ void onInit(CBlob@ this)
     this.set_bool("spawned", false);
     this.Tag("builder always hit");
 
+    this.set_bool("background placed", false);
+
     this.SetLight(true);
 	this.SetLightRadius(164.0f);
 	this.SetLightColor(SColor(255, 255, 240, 171));
+
+    //getMap().server_AddSector(this.getPosition() + Vec2f(-64,68), this.getPosition() + Vec2f(64, -68), "no build", "", this.getNetworkID());
+}
+
+void onInit(CSprite@ this)
+{
+    CBlob@ blob = this.getBlob();
 }
 
 void onTick(CBlob@ this)
 {
-    if (this.getTickSinceCreated() >= 1 && this.getTickSinceCreated() <= 10)
-	{
-		Vec2f tilepos = this.getPosition() + Vec2f(-4, 0);
-		getMap().server_SetTile(tilepos, CMap::tile_castle_back);
-	}
+    if(!this.get_bool("background placed"))
+    {
+        placeBackground(this);
+        this.set_bool("background placed", true);
+    }
 
     u16 target = this.get_u16(target_player_id);
     CBlob@ targetBlob = getBlobByNetworkID(target);
@@ -63,7 +71,7 @@ void onTick(CBlob@ this)
                 }
             }
 
-            if (LoseTarget(this, targetBlob))
+            if (targetBlob.hasTag("dead"))
 			{
 				this.set_u16(target_player_id, 0);
 				this.Sync(target_player_id, true);
@@ -96,7 +104,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 
                         f32 angle = getAimAngle(this);
                         angle += ((XORRandom(512) - 256) / 132.0f);
-                        Vec2f vel = Vec2f(25.0f * (this.isFacingLeft() ? -1 : 1), 0.0f).RotateBy(angle);
+                        Vec2f vel = Vec2f(23.0f * (this.isFacingLeft() ? -1 : 1), 0.0f).RotateBy(angle);
                         arrow.setVelocity(vel);
                         arrow.server_SetTimeToDie(2.0f);
                     }
@@ -105,18 +113,6 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
             }
         }
     }
-}
-
-bool LoseTarget(CBlob@ this, CBlob@ targetblob)
-{
-	if ((getGameTime() % 10 == 0) && targetblob.hasTag("dead"))
-	{
-		this.set_u16(target_player_id, 0);
-		this.Sync(target_player_id, true);
-
-		return true;
-	}
-	return false;
 }
 
 CBlob@ getNewTarget(CBlob @blob, const bool seeThroughWalls = false, const bool seeBehindBack = false)
@@ -154,38 +150,48 @@ f32 getAimAngle(CBlob@ this)
 {
 	CBlob@ targetblob = getBlobByNetworkID(this.get_u16(target_player_id)); //target's blob
 
-	f32 angle = 0;
-	bool facing_left = this.isFacingLeft();
-
-	bool failed = true;
-
-	if (targetblob !is null)
-	{
-		Vec2f aim_vec = (this.getPosition() - Vec2f(0.0f, 10.0f)) - (targetblob.getPosition() + Vec2f(0.0f, -4.0f) + targetblob.getVelocity() * 2.0f);
-
-		if ((!facing_left && aim_vec.x < 0) ||
-		        (facing_left && aim_vec.x > 0))
-		{
-
-			angle = (-(aim_vec).getAngle() + 180.0f);
-			if (facing_left)
-			{
-				angle += 180;
-			}
-		}
-		else
-		{
-			this.SetFacingLeft(!facing_left);
-		}
-	}
+    Vec2f aim_vec = (this.getPosition() - Vec2f(0.0f, 10.0f)) - (targetblob.getPosition() + Vec2f(0.0f, -4.0f) + targetblob.getVelocity() * 2.0f);;
+    f32 angle = (-(aim_vec).getAngle() + 180.0f);
 
 	return angle;
 }
 
 bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
 {
-    if((this.getTeamNum() == blob.getTeamNum()) && ((blob.getControls() !is null || blob.hasTag("player")) && (blob.getBrain() !is null)))
+    if((this.getTeamNum() == blob.getTeamNum()))
 	    return false;
     else
         return true;
+}
+
+void onHealthChange(CBlob@ this, f32 oldHealth)
+{
+	CSprite@ sprite = this.getSprite();
+	if (sprite !is null)
+	{
+		Animation@ destruction = sprite.getAnimation("destruction");
+		if (destruction !is null)
+		{
+			f32 frame = Maths::Floor((this.getInitialHealth() - this.getHealth()) / (this.getInitialHealth() / sprite.animation.getFramesCount()));
+			sprite.animation.frame = frame;
+		}
+	}
+}
+
+void placeBackground(CBlob@ this)
+{
+    getMap().server_SetTile(this.getPosition() + Vec2f(-49, 67), CMap::tile_castle_back);
+    getMap().server_SetTile(this.getPosition() + Vec2f(-41, 67), CMap::tile_castle_back);
+    getMap().server_SetTile(this.getPosition() + Vec2f(-33, 67), CMap::tile_castle_back);
+    getMap().server_SetTile(this.getPosition() + Vec2f(-25, 67), CMap::tile_castle_back);
+    getMap().server_SetTile(this.getPosition() + Vec2f(-17, 67), CMap::tile_castle_back);
+    getMap().server_SetTile(this.getPosition() + Vec2f(-9, 67), CMap::tile_castle_back);
+    getMap().server_SetTile(this.getPosition() + Vec2f(-1, 67), CMap::tile_castle_back);
+    getMap().server_SetTile(this.getPosition() + Vec2f(7, 67), CMap::tile_castle_back);
+    getMap().server_SetTile(this.getPosition() + Vec2f(15, 67), CMap::tile_castle_back);
+    getMap().server_SetTile(this.getPosition() + Vec2f(23, 67), CMap::tile_castle_back);
+    getMap().server_SetTile(this.getPosition() + Vec2f(31, 67), CMap::tile_castle_back);
+    getMap().server_SetTile(this.getPosition() + Vec2f(39, 67), CMap::tile_castle_back);
+    getMap().server_SetTile(this.getPosition() + Vec2f(47, 67), CMap::tile_castle_back);
+    getMap().server_SetTile(this.getPosition() + Vec2f(55, 67), CMap::tile_castle_back);
 }
