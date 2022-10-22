@@ -5,7 +5,7 @@ void onInit(CBlob@ this)
     this.getSprite().SetZ(-50.0f);
     this.getShape().getConsts().mapCollisions = false;
     
-    this.set_TileType("background tile", CMap::tile_castle_back);
+    this.set_TileType("background tile", CMap::tile_empty);
 
     this.addCommandID("shoot");
 
@@ -13,11 +13,15 @@ void onInit(CBlob@ this)
 	this.set_u16(target_player_id, 0);
     this.set_bool("spawned", false);
     this.Tag("builder always hit");
+
+    this.SetLight(true);
+	this.SetLightRadius(164.0f);
+	this.SetLightColor(SColor(255, 255, 240, 171));
 }
 
 void onTick(CBlob@ this)
 {
-    if (this.getTickSinceCreated() == 1)
+    if (this.getTickSinceCreated() >= 1 && this.getTickSinceCreated() <= 10)
 	{
 		Vec2f tilepos = this.getPosition() + Vec2f(-4, 0);
 		getMap().server_SetTile(tilepos, CMap::tile_castle_back);
@@ -58,9 +62,7 @@ void onTick(CBlob@ this)
                 }
             }
 
-            LoseTarget(this, targetBlob);
-
-            if (XORRandom(200) == 0)
+            if (LoseTarget(this, targetBlob))
 			{
 				this.set_u16(target_player_id, 0);
 				this.Sync(target_player_id, true);
@@ -106,7 +108,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 
 bool LoseTarget(CBlob@ this, CBlob@ targetblob)
 {
-	if (XORRandom(19) == 0 && targetblob.hasTag("dead"))
+	if ((getGameTime() % 10 == 0) && targetblob.hasTag("dead"))
 	{
 		this.set_u16(target_player_id, 0);
 		this.Sync(target_player_id, true);
