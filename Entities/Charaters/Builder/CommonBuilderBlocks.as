@@ -118,10 +118,10 @@ void addCommonBuilderBlocks(BuildBlock[][]@ blocks, int team_num = 0, const stri
 		blocks[0].push_back(b);
 	}
 	{
-		BuildBlock b(0, "castle", getTeamIcon("castle", "Castle.png", team_num, Vec2f(64, 64)), "A castle");
-		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 1);
+		BuildBlock b(0, "castle", getTeamIcon("castle", "Castle.png", team_num, Vec2f(128, 144)), "A castle");
+		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 2000);
 		b.buildOnGround = true;
-		b.size.Set(128, 128);
+		b.size.Set(128, 144);
 		blocks[0].push_back(b);
 	}
 }
