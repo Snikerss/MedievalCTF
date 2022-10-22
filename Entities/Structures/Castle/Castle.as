@@ -4,6 +4,7 @@ void onInit(CBlob@ this)
 {
     this.getSprite().SetZ(-50.0f);
     this.getShape().getConsts().mapCollisions = false;
+    this.SetFacingLeft(true);
     
     this.set_TileType("background tile", CMap::tile_empty);
 
@@ -32,7 +33,7 @@ void onTick(CBlob@ this)
 
     this.getCurrentScript().tickFrequency = 12;
 
-    if(target == 0)
+    if(target == 0 || targetBlob is null)
     {
         @targetBlob = getNewTarget(this, true, true);
         if(targetBlob !is null)
@@ -179,4 +180,12 @@ f32 getAimAngle(CBlob@ this)
 	}
 
 	return angle;
+}
+
+bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
+{
+    if((this.getTeamNum() == blob.getTeamNum()) && ((blob.getControls() !is null || blob.hasTag("player")) && (blob.getBrain() !is null)))
+	    return false;
+    else
+        return true;
 }
