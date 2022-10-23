@@ -62,7 +62,7 @@ void onInit(CBlob@ this)
 	}
 
 	this.SetMinimapOutsideBehaviour(CBlob::minimap_snap);
-	this.SetMinimapVars("GUI/Minimap/MinimapIcons.png", 7, Vec2f(16, 16));
+	this.SetMinimapVars("MinimapTrebuchet.png", 0, Vec2f(10, 12));
 	this.SetMinimapRenderAlways(false);
 }
 

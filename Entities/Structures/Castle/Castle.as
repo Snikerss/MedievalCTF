@@ -20,7 +20,9 @@ void onInit(CBlob@ this)
 	this.SetLightRadius(164.0f);
 	this.SetLightColor(SColor(255, 255, 240, 171));
 
-    //getMap().server_AddSector(this.getPosition() + Vec2f(-64,68), this.getPosition() + Vec2f(64, -68), "no build", "", this.getNetworkID());
+    this.SetMinimapOutsideBehaviour(CBlob::minimap_snap);
+	this.SetMinimapVars("MinimapCastle.png", 0, Vec2f(14, 12));
+	this.SetMinimapRenderAlways(true);
 }
 
 void onInit(CSprite@ this)
@@ -41,7 +43,7 @@ void onTick(CBlob@ this)
 
     this.getCurrentScript().tickFrequency = 12;
 
-    if(target == 0 || targetBlob is null)
+    if(target == 0)
     {
         @targetBlob = getNewTarget(this, true, true);
         if(targetBlob !is null)
@@ -71,11 +73,16 @@ void onTick(CBlob@ this)
                 }
             }
 
-            if (targetBlob.hasTag("dead"))
+            if (targetBlob.hasTag("dead") || !visibleTarget)
 			{
 				this.set_u16(target_player_id, 0);
 				this.Sync(target_player_id, true);
 			}
+        }
+        else
+        {
+            this.set_u16(target_player_id, 0);
+			this.Sync(target_player_id, true);
         }
     }
 }
