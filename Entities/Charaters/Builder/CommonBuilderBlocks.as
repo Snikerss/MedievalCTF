@@ -118,7 +118,7 @@ void addCommonBuilderBlocks(BuildBlock[][]@ blocks, int team_num = 0, const stri
 		blocks[0].push_back(b);
 	}
 	{
-		BuildBlock b(0, "castle", getTeamIcon("castle", "Castle.png", team_num, Vec2f(128, 136)), "A castle");
+		BuildBlock b(0, "castle", getTeamIcon("castle", "CastleIcon.png", team_num, Vec2f(32, 32)), "A castle");
 		AddRequirement(b.reqs, "blob", "mat_stone", "Stone", 2000);
 		b.buildOnGround = true;
 		b.size.Set(128, 136);

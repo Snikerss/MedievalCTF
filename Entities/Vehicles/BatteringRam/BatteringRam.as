@@ -52,6 +52,10 @@ void onInit(CBlob@ this)
 		front.SetRelativeZ(55.0f);
 		front.SetOffset(Vec2f(-7, -4));
 	}
+
+	this.SetMinimapOutsideBehaviour(CBlob::minimap_snap);
+	this.SetMinimapVars("MinimapBatteringram.png", 0, Vec2f(10, 5));
+	this.SetMinimapRenderAlways(false);
 }
 
 void onTick(CBlob@ this)
