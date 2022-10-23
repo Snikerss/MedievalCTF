@@ -54,7 +54,7 @@ void onInit(CBlob@ this)
 	}
 
 	this.SetMinimapOutsideBehaviour(CBlob::minimap_snap);
-	this.SetMinimapVars("MinimapBatteringram.png", 0, Vec2f(10, 5));
+	this.SetMinimapVars("MinimapBatteringram.png", 0, Vec2f(11, 7));
 	this.SetMinimapRenderAlways(false);
 }
 
