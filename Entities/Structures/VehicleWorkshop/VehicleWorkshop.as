@@ -112,6 +112,17 @@ void InitWorkshop(CBlob@ this)
 		s.buttonheight = 1;
 		AddRequirement(s.requirements, "coin", "", "Coins", 100);
 	}
+	{
+		string batteringram_icon = getTeamIcon("batteringram", "BatteringRamIcon.png", team_num, Vec2f(69, 32), 0);
+		ShopItem@ s = addShopItem(this, "Battering Ram", batteringram_icon, "batteringram", batteringram_icon + "\n\n\n\n\n" + "Heavy vehicle for 3 players, protect them from incoming damage (except explosives), has a lot of HP and big ram damage.\nAlso u can use it as a ladder!");
+		s.crate_icon = 5;
+		s.customButton = true;
+		s.buttonwidth = 3;
+		s.buttonheight = 2;
+		AddRequirement(s.requirements, "coin", "", "Coins", 200);
+		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 500);
+
+	}
 }
 
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
