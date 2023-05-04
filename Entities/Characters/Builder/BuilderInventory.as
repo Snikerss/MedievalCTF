@@ -39,7 +39,7 @@ const string[] PAGE_NAME =
 const u8 GRID_SIZE = 48;
 const u8 GRID_PADDING = 12;
 
-const Vec2f MENU_SIZE(10, 10);
+const Vec2f MENU_SIZE(5, 5);
 const u32 SHOW_NO_BUILD_TIME = 90;
 
 const bool QUICK_SWAP_ENABLED = false;

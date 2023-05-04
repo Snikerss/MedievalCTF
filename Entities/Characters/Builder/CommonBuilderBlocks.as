@@ -133,7 +133,6 @@ ConfigFile@ openBlockBindingsConfig()
 	{
 		// write EmoteBinding.cfg to Cache
 		cfg.saveFile("BlockBindings.cfg");
-
 	}
 
 	return cfg;

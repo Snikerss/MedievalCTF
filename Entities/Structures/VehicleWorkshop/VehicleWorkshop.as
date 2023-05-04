@@ -38,7 +38,6 @@ void InitWorkshop(CBlob@ this)
 		ShopItem@ s = addShopItem(this, "Ballista", ballista_icon, "ballista", ballista_icon + "\n\n\n" + Descriptions::ballista, false, true);
 		s.crate_icon = 5;
 		AddRequirement(s.requirements, "coin", "", "Coins", CTFCosts::ballista);
-		AddRequirement(s.requirements, "blob", "mat_gold", "Gold", CTFCosts::ballista_gold);
 		AddRequirement(s.requirements, "blob", "mat_wood", "Wood", 500);
 	}
 	{
