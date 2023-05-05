@@ -5,16 +5,13 @@ void onInit(CBlob@ this)
     this.getSprite().SetZ(-50.0f);
     this.getShape().getConsts().mapCollisions = false;
     
-    this.set_TileType("background tile", CMap::tile_empty);
+    this.set_TileType("background tile", CMap::tile_castle_back);
 
     this.addCommandID("shoot");
 
-    this.set_bool("spawned", false);
 	this.set_u16(target_player_id, 0);
     this.set_bool("spawned", false);
     this.Tag("builder always hit");
-
-    this.set_bool("background placed", false);
 
     this.SetLight(true);
 	this.SetLightRadius(164.0f);
@@ -25,19 +22,8 @@ void onInit(CBlob@ this)
 	this.SetMinimapRenderAlways(true);
 }
 
-void onInit(CSprite@ this)
-{
-    CBlob@ blob = this.getBlob();
-}
-
 void onTick(CBlob@ this)
 {
-    if(!this.get_bool("background placed"))
-    {
-        placeBackground(this);
-        this.set_bool("background placed", true);
-    }
-
     u16 target = this.get_u16(target_player_id);
     CBlob@ targetBlob = getBlobByNetworkID(target);
 
@@ -52,17 +38,15 @@ void onTick(CBlob@ this)
             this.Sync(target_player_id, true);
         }
     }
-    else
+    else if (targetBlob !is null)
     {
-        if(targetBlob !is null)
-        {
             this.getCurrentScript().tickFrequency = 1;
 
-            f32 distance;
+            f32 targetDistance;
             f32 shootDistance = 512.0f;
-            const bool visibleTarget = isVisible(this, targetBlob, distance);
+            const bool visibleTarget = isVisible(this, targetBlob, targetDistance);
             u32 gameTime = getGameTime();
-            if(visibleTarget && distance < shootDistance)
+            if(visibleTarget && targetDistance < shootDistance)
             {
                 if (this.get_u32("next shot") < gameTime)
                 {
@@ -78,7 +62,6 @@ void onTick(CBlob@ this)
 				this.set_u16(target_player_id, 0);
 				this.Sync(target_player_id, true);
 			}
-        }
         else
         {
             this.set_u16(target_player_id, 0);
@@ -127,21 +110,23 @@ CBlob@ getNewTarget(CBlob @blob, const bool seeThroughWalls = false, const bool 
 	CBlob@[] players;
 	getBlobsByTag("player", @players);
 	Vec2f pos = blob.getPosition();
+
 	for (uint i = 0; i < players.length; i++)
 	{
-		CBlob@ potential = players[i];
-		Vec2f pos2 = potential.getPosition();
+		CBlob@ target = players[i];
+		Vec2f pos2 = target.getPosition();
 		f32 distance;
-		if (potential !is blob && blob.getTeamNum() != potential.getTeamNum()
+
+		if (target !is blob && blob.getTeamNum() != target.getTeamNum()
 		        && (pos2 - pos).getLength() < 700.0f
-		        && !potential.hasTag("dead")
-		        && (XORRandom(200) == 0 || isVisible(blob, potential, distance))
-		   )
+		        && !target.hasTag("dead")
+		        && isVisible(blob, target, distance))
 		{
-			blob.set_Vec2f("last pathing pos", potential.getPosition());
-			return potential;
+			blob.set_Vec2f("last pathing pos", target.getPosition());
+			return target;
 		}
 	}
+
 	return null;
 }
 
@@ -183,22 +168,4 @@ void onHealthChange(CBlob@ this, f32 oldHealth)
 			sprite.animation.frame = frame;
 		}
 	}
-}
-
-void placeBackground(CBlob@ this)
-{
-    getMap().server_SetTile(this.getPosition() + Vec2f(-49, 67), CMap::tile_castle_back);
-    getMap().server_SetTile(this.getPosition() + Vec2f(-41, 67), CMap::tile_castle_back);
-    getMap().server_SetTile(this.getPosition() + Vec2f(-33, 67), CMap::tile_castle_back);
-    getMap().server_SetTile(this.getPosition() + Vec2f(-25, 67), CMap::tile_castle_back);
-    getMap().server_SetTile(this.getPosition() + Vec2f(-17, 67), CMap::tile_castle_back);
-    getMap().server_SetTile(this.getPosition() + Vec2f(-9, 67), CMap::tile_castle_back);
-    getMap().server_SetTile(this.getPosition() + Vec2f(-1, 67), CMap::tile_castle_back);
-    getMap().server_SetTile(this.getPosition() + Vec2f(7, 67), CMap::tile_castle_back);
-    getMap().server_SetTile(this.getPosition() + Vec2f(15, 67), CMap::tile_castle_back);
-    getMap().server_SetTile(this.getPosition() + Vec2f(23, 67), CMap::tile_castle_back);
-    getMap().server_SetTile(this.getPosition() + Vec2f(31, 67), CMap::tile_castle_back);
-    getMap().server_SetTile(this.getPosition() + Vec2f(39, 67), CMap::tile_castle_back);
-    getMap().server_SetTile(this.getPosition() + Vec2f(47, 67), CMap::tile_castle_back);
-    getMap().server_SetTile(this.getPosition() + Vec2f(55, 67), CMap::tile_castle_back);
 }

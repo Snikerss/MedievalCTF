@@ -29,9 +29,9 @@ void onTick(CBlob@ this)
 
 void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 {
-	if (this.getTickSinceCreated() > 5 && (solid ? true : (blob !is null && blob.isCollidable())))
+	if (isServer())
 	{
-		if (isServer())
+		if (this.getTickSinceCreated() > 5 && (solid ? true : (blob !is null && blob.isCollidable())))
 		{
 			this.server_Die();
 		}
@@ -40,10 +40,7 @@ void onCollision(CBlob@ this, CBlob@ blob, bool solid)
 
 void onDie(CBlob@ this)
 {
-	if (isServer())
-	{
-        Explode(this, this.get_f32("map_damage_radius"), this.get_f32("map_damage_ratio"));
-	}
+	Explode(this, this.get_f32("map_damage_radius"), this.get_f32("map_damage_ratio"));
 }
 
 bool doesCollideWithBlob(CBlob@ this, CBlob@ blob)
