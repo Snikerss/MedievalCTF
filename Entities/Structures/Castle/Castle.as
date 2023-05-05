@@ -35,6 +35,7 @@ void onTick(CBlob@ this)
         if(targetBlob !is null)
         {
             this.set_u16(target_player_id, targetBlob.getNetworkID());
+            this.Sync(target_player_id, true);
         }
     }
     else if (targetBlob !is null)
@@ -59,10 +60,12 @@ void onTick(CBlob@ this)
             if (targetBlob.hasTag("dead") || !visibleTarget)
 			{
 				this.set_u16(target_player_id, 0);
+				this.Sync(target_player_id, true);
 			}
         else
         {
             this.set_u16(target_player_id, 0);
+			this.Sync(target_player_id, true);
         }
     }
 }
