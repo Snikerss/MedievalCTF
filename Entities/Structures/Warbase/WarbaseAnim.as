@@ -164,7 +164,6 @@ void onInit( CSprite@ this )
         }
     }
     warbase.set_u8("old_upgrade_level", 100); //hack, makes client sync frames
-    onTick( this ); //update to get offsets etc working
 }
 
 void onTick( CSprite@ this )

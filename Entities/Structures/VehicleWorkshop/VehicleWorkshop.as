@@ -1,27 +1,21 @@
 #include "Requirements.as"
+#include "Requirements_Tech.as"
 #include "ShopCommon.as"
 #include "Descriptions.as"
 #include "Costs.as"
-#include "TeamIconToken.as"
-#include "Requirements_Tech.as"
 #include "CheckSpam.as"
+#include "TeamIconToken.as"
 
 void onInit(CBlob@ this)
 {
 	this.getSprite().SetZ(-50); //background
 	this.getShape().getConsts().mapCollisions = false;
 
-	InitWorkshop(this);
-}
-
-void InitWorkshop(CBlob@ this)
-{
-    InitCosts(); //read from cfg
+	InitCosts(); //read from cfg
 
 	this.set_Vec2f("shop offset", Vec2f_zero);
 	this.set_Vec2f("shop menu size", Vec2f(8, 8));
-
-    this.set_string("shop description", "Construct");
+	this.set_string("shop description", "Construct");
 
     int team_num = this.getTeamNum();
 
@@ -124,23 +118,20 @@ void InitWorkshop(CBlob@ this)
 	}
 }
 
+void GetButtonsFor(CBlob@ this, CBlob@ caller)
+{
+	this.set_bool("shop available", this.isOverlapping(caller));
+}
+
 void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
 {
-	bool isServer = getNet().isServer();
-
-	if (cmd == this.getCommandID("shop buy"))
+	if (cmd == this.getCommandID("shop made item"))
 	{
-		u16 callerID;
-		if (!params.saferead_u16(callerID))
-			return;
-		bool spawnToInventory = params.read_bool();
-		bool spawnInCrate = params.read_bool();
-		bool producing = params.read_bool();
-		string blobName = params.read_string();
-		u8 s_index = params.read_u8();
-
+		this.getSprite().PlaySound("/ChaChing.ogg");
+		u16 caller, item;
+		if (!params.saferead_netid(caller) || !params.saferead_netid(item))
 		{
-			this.getSprite().PlaySound("/ConstructShort");
+			return;
 		}
 	}
 }
