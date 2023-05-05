@@ -81,8 +81,9 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
                 for(int i = 0; i<5; i++)
                 {
                     CBlob@ arrow = server_CreateBlobNoInit("arrow");
+                    CBlob@ target = getBlobByNetworkID(this.get_u16(target_player_id));
 
-                    if(arrow !is null)
+                    if((arrow !is null) && (target !is null))
                     {
                         arrow.Init();
 
@@ -92,7 +93,7 @@ void onCommand(CBlob@ this, u8 cmd, CBitStream @params)
                         Vec2f pos = this.getPosition()- Vec2f(0.0f, 32.0f) + Vec2f(XORRandom(4096) / 64.0f, XORRandom(4096) / 64.0f);
                         arrow.setPosition(pos);
 
-                        f32 angle = getAimAngle(this);
+                        f32 angle = getAimAngle(this, target);
                         angle += ((XORRandom(512) - 256) / 132.0f);
                         Vec2f vel = Vec2f(23.0f * (this.isFacingLeft() ? -1 : 1), 0.0f).RotateBy(angle);
                         arrow.setVelocity(vel);
@@ -138,11 +139,9 @@ bool isVisible(CBlob@ blob, CBlob@ targetblob, f32 &out distance)
 	return visible;
 }
 
-f32 getAimAngle(CBlob@ this)
+f32 getAimAngle(CBlob@ this, CBlob@ target)
 {
-	CBlob@ targetblob = getBlobByNetworkID(this.get_u16(target_player_id)); //target's blob
-
-    Vec2f aim_vec = (this.getPosition() - Vec2f(0.0f, 10.0f)) - (targetblob.getPosition() + Vec2f(0.0f, -4.0f) + targetblob.getVelocity() * 2.0f);;
+    Vec2f aim_vec = (this.getPosition() - Vec2f(0.0f, 10.0f)) - (target.getPosition() + Vec2f(0.0f, -4.0f) + target.getVelocity() * 2.0f);
     f32 angle = (-(aim_vec).getAngle() + 180.0f);
 
 	return angle;
